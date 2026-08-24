@@ -1,0 +1,83 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --navy: #122b52;
+  --gold: #b98a2f;
+  --paper: #faf9f6;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply font-sans text-[#1a2233] bg-white;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+  letter-spacing: -0.015em;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4 {
+  letter-spacing: -0.025em;
+  line-height: 1.3;
+}
+
+.wrap {
+  width: min(100% - clamp(2rem, 6vw, 5rem), 80rem);
+  margin-inline: auto;
+}
+
+.skip-link {
+  @apply sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[100] focus:px-4 focus:py-2 focus:bg-white focus:text-brand-navy focus:rounded-md focus:shadow-lg focus:font-bold;
+}
+
+.btn {
+  @apply inline-flex items-center justify-center font-bold rounded-[0.35rem] transition;
+  min-height: 44px;
+  padding: 0.7rem 1.6rem;
+  font-size: clamp(0.9rem, 1.5vw, 1rem);
+}
+.btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(18, 43, 82, 0.12);
+}
+.btn:active {
+  transform: translateY(0);
+}
+
+.card-lift {
+  @apply transition duration-300;
+}
+.card-lift:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 32px rgba(18, 43, 82, 0.1);
+}
+
+.eyebrow {
+  @apply inline-flex items-center gap-2.5 font-bold uppercase text-brand-goldsoft;
+  font-size: 0.8rem;
+  letter-spacing: 0.14em;
+}
+.eyebrow::before {
+  content: "";
+  width: 2.6rem;
+  height: 2px;
+  background: var(--gold);
+}
+.eyebrow--onlight {
+  @apply text-brand-gold;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .btn:hover,
+  .card-lift:hover {
+    transform: none;
+  }
+}
