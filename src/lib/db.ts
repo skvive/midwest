@@ -13,15 +13,16 @@ export function getSql() {
 
 export type DataMode = "dummy" | "real";
 
-/** app_state.data_mode 조회 (DB 없으면 dummy + demo) */
+/** app_state.data_mode 조회 (DB 없으면 real + demo — 원본 Midwest 이미지 기본) */
 export async function getDataMode(): Promise<{ mode: DataMode; demo: boolean }> {
   const sql = getSql();
-  if (!sql) return { mode: "dummy", demo: true };
+  if (!sql) return { mode: "real", demo: true };
   try {
     const rows = await sql`SELECT value FROM app_state WHERE key = 'data_mode' LIMIT 1`;
-    const mode = (rows[0]?.value as DataMode) ?? "dummy";
+    const raw = rows[0]?.value as string | undefined;
+    const mode: DataMode = raw === "dummy" ? "dummy" : "real";
     return { mode, demo: false };
   } catch {
-    return { mode: "dummy", demo: true };
+    return { mode: "real", demo: true };
   }
 }

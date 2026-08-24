@@ -45,7 +45,8 @@ export function BoardList({ board, top }: { board: BoardKey; top: string }) {
           ))}
         </div>
         <p className="text-xs text-brand-muted mt-8">
-          * 현재 목록은 데모 시드 데이터입니다(전 행 is_dummy). 우상단 [Dummy/Real] 스위치로 실데이터 모드 전환이 가능합니다.
+          * 시드 게시글은 디자인 참조용으로 유지됩니다. 우상단 [Dummy/Real]은 이미지 자산 전환용이며
+          더미 데이터를 삭제하지 않습니다. (Real = Midwest 원본 / Dummy = AI 시안)
         </p>
       </div>
     </>
