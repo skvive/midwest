@@ -171,10 +171,11 @@ export default function FacultyPage() {
                     )}
 
                     {p.education.length > 0 && (
-                      <ul className="mt-3 space-y-1 text-sm text-brand-slate">
+                      <ul className="mt-3 space-y-1.5 text-sm text-brand-slate">
                         {p.education.map((ed, i) => (
-                          <li key={i} className="leading-snug pl-3 relative before:content-['·'] before:absolute before:left-0 before:text-brand-gold">
-                            {ed}
+                          <li key={i} className="flex gap-2 leading-snug">
+                            <span className="text-brand-gold shrink-0" aria-hidden>·</span>
+                            <span>{ed}</span>
                           </li>
                         ))}
                       </ul>
@@ -187,8 +188,9 @@ export default function FacultyPage() {
                         </p>
                         <ul className="space-y-1.5 text-sm text-brand-muted">
                           {p.experience.map((ex, i) => (
-                            <li key={i} className="leading-snug pl-3 relative before:content-['·'] before:absolute before:left-0 before:text-brand-gold">
-                              {ex}
+                            <li key={i} className="flex gap-2 leading-snug">
+                              <span className="text-brand-gold shrink-0" aria-hidden>·</span>
+                              <span>{ex}</span>
                             </li>
                           ))}
                         </ul>
