@@ -4,7 +4,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://midwestuniv.vercel.app"),
+  metadataBase: new URL("https://midwestedu.vercel.app"),
   title: {
     default: "Midwest University — St. Louis, Missouri",
     template: "%s | Midwest University",
