@@ -11,14 +11,14 @@ npm run dev        # http://localhost:3000
 npm run build      # 프로덕션 빌드 (SSG 128 pages)
 ```
 
-## DB 연결 (선택)
+## 데이터 / 이미지 모드
 
-```bash
-# Neon 콘솔에서 db/schema.sql → db/seed.sql 실행 후
-export DATABASE_URL="postgres://..."
-export ADMIN_KEY="..."        # Hard Delete용
-```
-미설정 시 In-Memory 데모 모드로 동작(우상단 토글에 DEMO 배지).
+우상단 **[Dummy / Real]** 스위치:
+
+- **Real** (기본): 원본 Midwest 이미지 (`/media/img/...` 등). 게시 시드 데이터 유지.
+- **Dummy**: AI 시안 이미지 (`/media/dummy/...`). 더미 게시글을 Soft Delete 하지 않음.
+
+DB(`DATABASE_URL`) 연결 시 모드는 Neon `app_state`에 저장되고, 미연결 시에도 쿠키로 이미지 모드만 전환 가능합니다.
 
 ## 배포
 
