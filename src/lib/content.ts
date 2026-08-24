@@ -13,6 +13,7 @@ export type Page = {
 /** 게시판·특수 라우트는 전용 페이지가 담당하므로 제네릭 렌더러에서 제외 */
 const EXCLUDED = new Set([
   "/",
+  "/academics/faculty",
   "/student-life/official-bulletin",
   "/student-life/gallery-news",
   "/research/miri-news",
