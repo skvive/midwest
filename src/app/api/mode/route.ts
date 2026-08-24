@@ -19,12 +19,15 @@ function withModeCookie(body: { mode: "dummy" | "real"; demo: boolean }) {
 export async function GET() {
   const cookieMode = cookies().get(COOKIE)?.value;
   const state = await getDataMode();
-  // Prefer persisted DB mode when available; else cookie; default real (Midwest assets)
+
   if (!state.demo) {
-    return NextResponse.json(state);
+    // Sync cookie to DB mode (default real)
+    const mode = state.mode === "dummy" ? "dummy" : "real";
+    return withModeCookie({ mode, demo: false });
   }
-  const mode = cookieMode === "dummy" || cookieMode === "real" ? cookieMode : "real";
-  return NextResponse.json({ mode, demo: true });
+
+  const mode = cookieMode === "dummy" ? "dummy" : "real";
+  return withModeCookie({ mode, demo: true });
 }
 
 /**

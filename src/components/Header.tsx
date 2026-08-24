@@ -1,19 +1,39 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
-import { NAV, AUDIENCES } from "@/lib/nav";
+import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 import DataModeToggle from "./DataModeToggle";
+import LanguageToggle from "./LanguageToggle";
+import {
+  getLocaleFromPath,
+  localePath,
+  localizedAudiences,
+  localizedNav,
+  ui,
+} from "@/lib/i18n";
+
+const POPULI_APPLY = "https://www.midwest.edu/eng/03admissions/05apply/index.asp";
 
 export default function Header() {
   const [open, setOpen] = useState(false);
+  const pathname = usePathname() || "/";
+  const locale = getLocaleFromPath(pathname);
+  const t = ui[locale];
+  const nav = localizedNav(locale);
+  const audiences = localizedAudiences(locale);
+  const homeHref = localePath("/", locale);
+
+  useEffect(() => {
+    document.documentElement.lang = locale === "ko" ? "ko" : "en";
+  }, [locale]);
 
   return (
     <>
       <div className="h-1 bg-brand-navy" />
       <header className="sticky top-0 z-40 bg-white/95 backdrop-blur border-b border-brand-line">
-        <div className="wrap flex items-center gap-4 py-3.5">
-          <Link href="/" className="flex items-center gap-2.5 font-serif font-bold text-xl text-brand-navy shrink-0 group">
+        <div className="wrap flex items-center gap-3 lg:gap-4 py-3.5">
+          <Link href={homeHref} className="flex items-center gap-2.5 font-serif font-bold text-xl text-brand-navy shrink-0 group">
             <span
               aria-hidden
               className="inline-flex items-center justify-center w-9 h-9 rounded-sm bg-brand-navy text-brand-goldsoft text-sm font-bold transition group-hover:bg-brand-navy2"
@@ -29,7 +49,7 @@ export default function Header() {
           </Link>
 
           <nav className="ml-auto hidden lg:flex items-center gap-1">
-            {NAV.map((g) => (
+            {nav.map((g) => (
               <div key={g.label} className="relative group">
                 <Link
                   href={g.href}
@@ -56,12 +76,18 @@ export default function Header() {
           </nav>
 
           <div className="ml-auto lg:ml-2 flex items-center gap-2">
+            <LanguageToggle />
             <DataModeToggle />
-            <Link href="/admissions/requirements" className="btn bg-brand-navy text-white hover:bg-brand-navy2">
-              Apply
-            </Link>
+            <a
+              href={POPULI_APPLY}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn bg-brand-navy text-white hover:bg-brand-navy2"
+            >
+              {t.apply}
+            </a>
             <button
-              aria-label="메뉴 열기"
+              aria-label={t.openMenu}
               onClick={() => setOpen(true)}
               className="lg:hidden inline-flex items-center justify-center w-11 h-11 rounded-md border border-brand-line"
             >
@@ -72,9 +98,13 @@ export default function Header() {
 
         <div className="hidden md:block bg-brand-paper border-t border-brand-line">
           <div className="wrap flex flex-wrap gap-x-7 gap-y-1 py-2 text-[0.85rem] text-[#6b6a63]">
-            <span>Information for:</span>
-            {AUDIENCES.map((a) => (
-              <Link key={a.href} href={a.href} className="hover:text-brand-navy font-medium first-of-type:font-bold first-of-type:text-brand-navy">
+            <span>{t.informationFor}</span>
+            {audiences.map((a) => (
+              <Link
+                key={a.href}
+                href={a.href}
+                className="hover:text-brand-navy font-medium first-of-type:font-bold first-of-type:text-brand-navy"
+              >
                 {a.label}
               </Link>
             ))}
@@ -82,21 +112,23 @@ export default function Header() {
         </div>
       </header>
 
-      {/* 모바일 풀스크린 시트 내비 */}
       {open && (
         <div className="fixed inset-0 z-50 bg-brand-navy text-white overflow-y-auto">
-          <div className="wrap py-4 flex items-center justify-between">
+          <div className="wrap py-4 flex items-center justify-between gap-3">
             <span className="font-serif font-bold text-lg">Midwest University</span>
-            <button
-              aria-label="메뉴 닫기"
-              onClick={() => setOpen(false)}
-              className="w-11 h-11 rounded-md border border-white/30"
-            >
-              ✕
-            </button>
+            <div className="flex items-center gap-2">
+              <LanguageToggle />
+              <button
+                aria-label={t.closeMenu}
+                onClick={() => setOpen(false)}
+                className="w-11 h-11 rounded-md border border-white/30"
+              >
+                ✕
+              </button>
+            </div>
           </div>
           <nav className="wrap pb-10">
-            {NAV.map((g) => (
+            {nav.map((g) => (
               <details key={g.label} className="border-b border-white/15 py-1">
                 <summary className="py-3 font-semibold text-lg cursor-pointer list-none flex justify-between items-center">
                   {g.label} <span className="text-brand-goldsoft">＋</span>
@@ -116,13 +148,15 @@ export default function Header() {
                 </ul>
               </details>
             ))}
-            <Link
-              href="/admissions/requirements"
+            <a
+              href={POPULI_APPLY}
+              target="_blank"
+              rel="noopener noreferrer"
               onClick={() => setOpen(false)}
               className="btn bg-white text-brand-navy mt-6 w-full"
             >
-              Apply Online
-            </Link>
+              {t.applyOnline}
+            </a>
           </nav>
         </div>
       )}
