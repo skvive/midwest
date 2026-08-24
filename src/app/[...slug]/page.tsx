@@ -8,6 +8,7 @@ import {
   SECTION_LABELS,
   type Section,
 } from "@/lib/content";
+import { cleanSectionBlocks } from "@/lib/clean-blocks";
 
 export const dynamicParams = false;
 
@@ -24,13 +25,16 @@ function Blocks({ section }: { section: Section }) {
   const items: React.ReactNode[] = [];
   let list: string[] = [];
   let rows: string[] = [];
+  const blocks = cleanSectionBlocks(section);
 
   const flushList = (key: string) => {
     if (list.length) {
       items.push(
         <ul key={"ul" + key} className="list-disc pl-5 space-y-1.5 text-brand-slate my-3">
           {list.map((x, i) => (
-            <li key={i}>{x}</li>
+            <li key={i} className="leading-relaxed">
+              {x}
+            </li>
           ))}
         </ul>
       );
@@ -42,7 +46,7 @@ function Blocks({ section }: { section: Section }) {
       items.push(
         <div key={"tb" + key} className="my-4 border border-brand-line rounded-md divide-y divide-brand-line overflow-hidden">
           {rows.map((x, i) => (
-            <div key={i} className={`px-4 py-2.5 text-sm ${i % 2 ? "bg-white" : "bg-brand-paper"} text-brand-slate`}>
+            <div key={i} className={`px-4 py-2.5 text-sm leading-relaxed ${i % 2 ? "bg-white" : "bg-brand-paper"} text-brand-slate`}>
               {x}
             </div>
           ))}
@@ -52,13 +56,23 @@ function Blocks({ section }: { section: Section }) {
     }
   };
 
-  section.blocks.forEach((b, i) => {
+  blocks.forEach((b, i) => {
     if (b.t === "li") {
       flushRows(String(i));
       list.push(b.x);
     } else if (b.t === "row") {
       flushList(String(i));
-      rows.push(b.x);
+      // Short rows as headings-ish labels
+      if (b.x.length < 90 && /^(Dr\.|Mr\.|Ms\.|Prof\.)/i.test(b.x)) {
+        flushRows(String(i));
+        items.push(
+          <h3 key={"h" + i} className="font-serif text-brand-navy text-lg mt-6 mb-2">
+            {b.x}
+          </h3>
+        );
+      } else {
+        rows.push(b.x);
+      }
     } else {
       flushList(String(i));
       flushRows(String(i));

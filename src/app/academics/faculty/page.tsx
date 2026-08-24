@@ -162,8 +162,8 @@ export default function FacultyPage() {
                   >
                     <h3 className="font-serif text-lg text-brand-navy leading-snug">
                       {p.name}
-                      <span className="text-brand-gold font-sans text-sm font-bold ml-1.5">
-                        {p.degree}
+                      <span className="text-brand-gold font-sans text-sm font-bold ml-2">
+                        {formatDegree(p.degree)}
                       </span>
                     </h3>
                     {p.field && (
@@ -185,9 +185,9 @@ export default function FacultyPage() {
                         <p className="text-[0.7rem] font-bold uppercase tracking-wider text-brand-gold mb-1.5">
                           Experience
                         </p>
-                        <ul className="space-y-1 text-sm text-brand-muted">
+                        <ul className="space-y-1.5 text-sm text-brand-muted">
                           {p.experience.map((ex, i) => (
-                            <li key={i} className="leading-snug">
+                            <li key={i} className="leading-snug pl-3 relative before:content-['·'] before:absolute before:left-0 before:text-brand-gold">
                               {ex}
                             </li>
                           ))}
@@ -210,4 +210,11 @@ function slugify(s: string) {
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/(^-|-$)/g, "");
+}
+
+function formatDegree(d: string) {
+  if (!d) return "";
+  // M.A -> M.A. ; Ph.D -> Ph.D. ; D.Min -> D.Min.
+  if (/[a-z]$/i.test(d) && !d.endsWith(".")) return `${d}.`;
+  return d;
 }

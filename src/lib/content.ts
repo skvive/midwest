@@ -14,6 +14,10 @@ export type Page = {
 const EXCLUDED = new Set([
   "/",
   "/academics/faculty",
+  "/academics/adjunct-professors",
+  "/academics/endowed-chair-professors",
+  "/academics/course-descriptions",
+  "/about/administration",
   "/student-life/official-bulletin",
   "/student-life/gallery-news",
   "/research/miri-news",
